@@ -10,8 +10,12 @@
     <script type="text/javascript" src="../osql.js"></script>
 
     <script>
-        function button1Pressed() {
+        function buttonTweetPressed() {
             doInsert();
+        }
+
+        function buttonShowPressed() {
+            doSelect();
         }
 
         async function doInsert() {
@@ -23,7 +27,26 @@
             console.log(objects);
 
             document.getElementById('result').innerHTML = "tweetしました";
+            document.getElementById('tf2').value = "";
         }
+
+        async function doSelect() {
+            var search = document.getElementById("search").value;
+            //window.alert(search);
+            var sql = `select * from Tweets where tweet LIKE "%${search}%" order by time desc limit 20`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+            var html = '';
+            html = html + '<table border = "1">';
+            html = html + "<tr><th>id</th><th>name</th><th>tweet</th></tr>"
+            for (var i = 0; i < objects.length; i++) {
+                var object = objects[i];
+                html = html + '<tr><td>' + object.id + "</td><td>" + object.name + '</td><td>' + object.tweet + '</td></tr>';
+            }
+            html = html + "</table>"
+            document.getElementById('TweetResult').innerHTML = html;
+        }
+
     </script>
 
 </head>
@@ -34,9 +57,14 @@
     名前:<input id="tf1" value="名無し" type="textfield">
     <br>
     tweet:<input id="tf2" type="textfield">
-    <button onclick="button1Pressed()">tweet</button>
+    <button onclick="buttonTweetPressed()">tweet</button>
     <br>
     <p id="result"></p>
+
+    <input id="search" type="text" placeholder="検索したい文字列を入力"></input>
+    <button onclick="buttonShowPressed()">show</button>
+    <hr>
+    <p id="TweetResult">xxxx</p>
 </body>
 
 </html>
