@@ -10,13 +10,21 @@
     <script type="text/javascript" src="../osql.js"></script>
 
     <script>
+        $().ready(function () {
+            init();
+        });
+
+        function init() {
+            var name = osql.getParam('name');
+            document.getElementById('inputName').innerHTML = name;
+        }
     </script>
 
 </head>
 
 <body>
     <h1>ユーザトップ</h1>
-    <p id="welcome">ようこそxxさん</p>
+    <p id="welcome">ようこそ<span id="inputName"></span>さん</p>
     <hr>
 
 </body>
