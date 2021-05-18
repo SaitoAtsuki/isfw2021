@@ -24,23 +24,28 @@
             }
             var user = objects[0];
             document.getElementById('tf1').value = user.id;
-            document.getElementById('tf2').value = user.password;
-            document.getElementById('tf3').value = user.name;
+            var password = user.password;
+            sessionStorage.setItem("password", password);
+            //document.getElementById('tf2').value = user.password;
         }
 
         function button2Pressed() {
-            execUpdate();
+            execDelete();
         }
 
-        async function execUpdate() {
+        async function execDelete() {
             var userid = document.getElementById('tf1').value;
-            var password = document.getElementById('tf2').value;
-            var username = document.getElementById('tf3').value;
 
-            var sql = `delete from Users where id="${userid}";`;
-            var objects = await osql.connect(sql);
+            var password = sessionStorage.getItem("password");
+            var inputPass = document.getElementById("tf2").value;
+            if (password == inputPass) {
+                var sql = `delete from Users where id="${userid}";`;
+                var objects = await osql.connect(sql);
+                document.getElementById('result').innerHTML = 'OK';
+            } else {
+                document.getElementById('result').innerHTML = 'パスワードが違います';
+            }
 
-            document.getElementById('result').innerHTML = 'OK';
         }
     </script>
 
@@ -51,8 +56,6 @@
     userid:<input id="tf1" value="" type="textfield" disabled>
     <br>
     password:<input id="tf2" value="" type="password">
-    <br>
-    name:<input id="tf3" value="" type="textfield">
     <button onclick="button2Pressed()">削除</button>
 
     <p id="result"></p>

@@ -39,6 +39,7 @@
 
             var sql = `update Users set name="${username}", password="${password}" where id="${userid}";`;
             var objects = await osql.connect(sql);
+            sessionStorage.setItem('username', username);
 
             document.getElementById('result').innerHTML = 'OK';
         }
